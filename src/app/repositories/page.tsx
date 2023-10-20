@@ -39,8 +39,13 @@ interface RepositoryItemProps {
 function Repositories() {
   const [repositories, setRepositories] = useState([{} as RepositoryItemProps]);
   const [filterRepos, setFilterRepos] = useState([{} as RepositoryItemProps]);
-  const user = localStorage.getItem("user-github");
-
+  const [userName, setUserName] = useState("");
+  if (typeof window !== "undefined") {
+    const user = localStorage.getItem("user-github");
+    if (user) {
+      setUserName(user);
+    }
+  }
   const [isOpen, setisOpen] = useState(false);
 
   const handleOpen = () => setisOpen((prev) => !prev);
@@ -74,15 +79,15 @@ function Repositories() {
   };
 
   useEffect(() => {
-    if (user) {
-      getRepositories(user);
+    if (userName) {
+      getRepositories(userName);
     }
   });
 
   return (
     <Container>
       <Header>
-        <h1>Repositorios de {user}</h1>
+        <h1>Repositorios de {userName}</h1>
       </Header>
       <FilterBar>
         <BackButton />
