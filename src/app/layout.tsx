@@ -1,3 +1,4 @@
+import { InfoContextProvider } from "@/contexts/InfoContext";
 import "./globals.css";
 import { Saira } from "next/font/google";
 
@@ -13,7 +14,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-      <body className={saira.className}>{children}</body>
+      <InfoContextProvider>
+        <body className={saira.className}>{children}</body>
+      </InfoContextProvider>
     </html>
   );
 }
