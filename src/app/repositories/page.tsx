@@ -66,6 +66,7 @@ function Repositories() {
   const getRepositories = async (userName: string) => {
     try {
       const data = await RepositoryService.getRepositories(userName);
+      console.log(data);
       setRepositories(data);
       setFilterRepos(data);
     } catch (error) {
@@ -77,7 +78,7 @@ function Repositories() {
     if (user) {
       getRepositories(user);
     }
-  });
+  }, [user]);
 
   return (
     <Container>
@@ -97,12 +98,12 @@ function Repositories() {
                 Organizar por
               </li>
               <li onClick={() => handleUpdatepriority(PriorityTypes.GROWING)}>
-                Crescente
+                Menos popular
               </li>
               <li
                 onClick={() => handleUpdatepriority(PriorityTypes.DESCENDING)}
               >
-                Decrescente
+                Mais popular
               </li>
             </PriorityFilter>
           )}
@@ -113,10 +114,10 @@ function Repositories() {
           {filterRepos.map((item) => (
             <RepositoryItem
               description={item.description}
+              html_url={item.html_url}
               language={item.language}
               name={item.name}
               stargazers_count={item.stargazers_count}
-              html_url={item.html_url}
               key={item.name}
             />
           ))}
