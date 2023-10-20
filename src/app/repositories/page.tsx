@@ -14,7 +14,6 @@ import RepositoryService from "@/services/git-repository.service";
 import { PriorityTypes } from "@/types/priorityTypes";
 import ArrowIcon from "@/components/svg/ArrowIcon";
 import BackButton from "@/components/BackButton";
-import { useInfos } from "@/hooks/useInfos";
 
 interface Userprops {
   name: string;
@@ -40,7 +39,8 @@ interface RepositoryItemProps {
 function Repositories() {
   const [repositories, setRepositories] = useState([{} as RepositoryItemProps]);
   const [filterRepos, setFilterRepos] = useState([{} as RepositoryItemProps]);
-  const { userName } = useInfos();
+  const user = localStorage.getItem("user-github");
+
   const [isOpen, setisOpen] = useState(false);
 
   const handleOpen = () => setisOpen((prev) => !prev);
@@ -74,15 +74,15 @@ function Repositories() {
   };
 
   useEffect(() => {
-    if (userName) {
-      getRepositories(userName);
+    if (user) {
+      getRepositories(user);
     }
   });
 
   return (
     <Container>
       <Header>
-        <h1>Repositorios de {userName}</h1>
+        <h1>Repositorios de {user}</h1>
       </Header>
       <FilterBar>
         <BackButton />
@@ -110,7 +110,7 @@ function Repositories() {
       </FilterBar>
       <RepositoriesContent>
         <ul>
-          {repositories.map((item) => (
+          {filterRepos.map((item) => (
             <RepositoryItem
               description={item.description}
               language={item.language}

@@ -16,7 +16,6 @@ import {
 } from "./styles";
 import UserService from "@/services/git-hub-user.service";
 import { useRouter } from "next/navigation";
-import { useInfos } from "@/hooks/useInfos";
 
 interface Userprops {
   name: string;
@@ -32,7 +31,6 @@ function SeachUser() {
   const [user, setUser] = useState<Userprops>();
   const [inputError, setInputError] = useState("");
   const router = useRouter();
-  const { userName, setUserName } = useInfos();
   const handleGetUser = async (userName: any) => {
     if (!userName) {
       setInputError("Digite o nome de um usuario.");
@@ -43,7 +41,7 @@ function SeachUser() {
       const data = await UserService.getUser(userName);
       setUser(data);
       if (userName !== data.login) {
-        setUserName(userName);
+        localStorage.setItem("user-github", userName);
       }
     } catch (error) {
       setInputError("Erro na busca por esse usuario");
@@ -56,8 +54,9 @@ function SeachUser() {
   };
 
   useEffect(() => {
-    handleGetUser(userName);
-  }, [userName]);
+    const login = localStorage.getItem("user-github");
+    handleGetUser(login);
+  }, []);
 
   return (
     <Container>
